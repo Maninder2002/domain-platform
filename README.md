@@ -76,17 +76,107 @@ Centralized control panel for managing platform operations.
 
 ---
 
+# 🗄️ Database Design
+
+```mermaid
+erDiagram
+
+    USERS {
+        bigint id PK
+        string name
+        string email
+        string phone
+        string role
+    }
+
+    ORDERS {
+        bigint id PK
+        bigint user_id FK
+        decimal total_amount
+        enum status
+        string payment_reference
+    }
+
+    ORDER_ITEMS {
+        bigint id PK
+        bigint order_id FK
+        string domain
+        enum type
+        int years
+        decimal price
+    }
+
+    DOMAINS {
+        bigint id PK
+        bigint user_id FK
+        bigint order_id FK
+        string full_domain UNIQUE
+        string domain_name
+        string extension
+        decimal purchase_price
+        date expiry_date
+        enum status
+    }
+
+    DOMAIN_EXTENSIONS {
+        bigint id PK
+        string extension UNIQUE
+        decimal price
+        decimal renewal_price
+        boolean is_active
+    }
+
+    DOMAIN_LOCKS {
+        bigint id PK
+        string domain
+        bigint user_id FK
+        timestamp expires_at
+    }
+
+    PAGES {
+        bigint id PK
+        string slug UNIQUE
+        string title
+    }
+
+    PAGE_SECTIONS {
+        bigint id PK
+        bigint page_id FK
+        string type
+        text content
+        int order
+    }
+
+    CONTACT_MESSAGES {
+        bigint id PK
+        string name
+        string email
+        string subject
+        text message
+    }
+
+    USERS ||--o{ ORDERS : places
+    USERS ||--o{ DOMAINS : owns
+    USERS ||--o{ DOMAIN_LOCKS : locks
+
+    ORDERS ||--o{ ORDER_ITEMS : contains
+    ORDERS ||--o{ DOMAINS : creates
+
+    DOMAINS }o--|| DOMAIN_EXTENSIONS : uses
+
+    PAGES ||--o{ PAGE_SECTIONS : has
+
+---
+
+
 # 📸 Screenshots
 
 ---
 
 ## 🟢 User Frontend
 
-### 🏠 Home Page
+### 🔍 Domain Search and Home Page
 ![Home](./screenshots/frontend/home.png)
-
-### 🔍 Domain Search
-![Search](./screenshots/frontend/home.png)
 
 ### 🛒 Cart
 ![Cart](./screenshots/frontend/cart.png)
