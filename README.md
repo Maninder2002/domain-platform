@@ -76,13 +76,13 @@ Centralized control panel for managing platform operations.
 
 ---
 
-# 🗄️ Database Design
+## 🗄️ Database Design
 
 ```mermaid
 erDiagram
 
     USERS {
-        bigint id PK
+        int id PK
         string name
         string email
         string phone
@@ -90,69 +90,69 @@ erDiagram
     }
 
     ORDERS {
-        bigint id PK
-        bigint user_id FK
-        decimal total_amount
-        enum status
+        int id PK
+        int user_id FK
+        float total_amount
+        string status
         string payment_reference
     }
 
     ORDER_ITEMS {
-        bigint id PK
-        bigint order_id FK
+        int id PK
+        int order_id FK
         string domain
-        enum type
+        string type
         int years
-        decimal price
+        float price
     }
 
     DOMAINS {
-        bigint id PK
-        bigint user_id FK
-        bigint order_id FK
-        string full_domain UNIQUE
+        int id PK
+        int user_id FK
+        int order_id FK
+        string full_domain
         string domain_name
         string extension
-        decimal purchase_price
+        float purchase_price
         date expiry_date
-        enum status
+        string status
     }
 
     DOMAIN_EXTENSIONS {
-        bigint id PK
-        string extension UNIQUE
-        decimal price
-        decimal renewal_price
-        boolean is_active
+        int id PK
+        string extension
+        float price
+        float renewal_price
+        string is_active
     }
 
     DOMAIN_LOCKS {
-        bigint id PK
+        int id PK
         string domain
-        bigint user_id FK
-        timestamp expires_at
+        int user_id FK
+        string expires_at
     }
 
     PAGES {
-        bigint id PK
-        string slug UNIQUE
+        int id PK
+        string slug
         string title
     }
 
     PAGE_SECTIONS {
-        bigint id PK
-        bigint page_id FK
+        int id PK
+        int page_id FK
         string type
-        text content
+        string content
         int order
     }
 
     CONTACT_MESSAGES {
-        bigint id PK
+        int id PK
         string name
         string email
         string subject
-        text message
+        string message
     }
 
     USERS ||--o{ ORDERS : places
@@ -162,10 +162,8 @@ erDiagram
     ORDERS ||--o{ ORDER_ITEMS : contains
     ORDERS ||--o{ DOMAINS : creates
 
-    DOMAINS }o--|| DOMAIN_EXTENSIONS : uses
-
     PAGES ||--o{ PAGE_SECTIONS : has
-
+```
 ---
 
 
