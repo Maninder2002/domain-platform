@@ -72,7 +72,7 @@ Centralized control panel for managing platform operations.
 
 # 🏗️ Architecture
 
-![Architecture](./architecture.png)
+![Architecture](./domain-platform-structure.png)
 
 ---
 
